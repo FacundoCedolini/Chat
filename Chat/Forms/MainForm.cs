@@ -55,6 +55,17 @@ namespace Chat.Forms
                 MessageBox.Show($"Error sending message: {ex.Message}");
             }
         }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            var registerForm = new RegisterForm();
+            registerForm.ShowDialog();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

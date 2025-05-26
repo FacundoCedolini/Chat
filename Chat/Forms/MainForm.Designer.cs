@@ -21,66 +21,92 @@ namespace Chat.Forms
 
         private void InitializeComponent()
         {
-            this.txtUser = new System.Windows.Forms.TextBox();
-            this.txtMessage = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.listBoxMessages = new System.Windows.Forms.ListBox();
-            this.lblUser = new System.Windows.Forms.Label();
-            this.lblMessage = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-
+            txtUser = new TextBox();
+            txtMessage = new TextBox();
+            btnSend = new Button();
+            listBoxMessages = new ListBox();
+            lblUser = new Label();
+            lblMessage = new Label();
+            btnRegister = new Button();
+            SuspendLayout();
+            // 
             // txtUser
-            this.txtUser.Location = new System.Drawing.Point(80, 15);
-            this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(200, 23);
-
+            // 
+            txtUser.Location = new Point(80, 15);
+            txtUser.Name = "txtUser";
+            txtUser.Size = new Size(200, 23);
+            txtUser.TabIndex = 2;
+            // 
             // txtMessage
-            this.txtMessage.Location = new System.Drawing.Point(80, 50);
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(400, 23);
-
+            // 
+            txtMessage.Location = new Point(80, 50);
+            txtMessage.Name = "txtMessage";
+            txtMessage.Size = new Size(400, 23);
+            txtMessage.TabIndex = 3;
+            // 
             // btnSend
-            this.btnSend.Location = new System.Drawing.Point(490, 50);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
-            this.btnSend.Text = "Enviar";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-
+            // 
+            btnSend.Location = new Point(490, 50);
+            btnSend.Name = "btnSend";
+            btnSend.Size = new Size(75, 23);
+            btnSend.TabIndex = 4;
+            btnSend.Text = "Enviar";
+            btnSend.UseVisualStyleBackColor = true;
+            btnSend.Click += btnSend_Click;
+            // 
             // listBoxMessages
-            this.listBoxMessages.FormattingEnabled = true;
-            this.listBoxMessages.ItemHeight = 15;
-            this.listBoxMessages.Location = new System.Drawing.Point(15, 90);
-            this.listBoxMessages.Name = "listBoxMessages";
-            this.listBoxMessages.Size = new System.Drawing.Size(550, 244);
-
+            // 
+            listBoxMessages.FormattingEnabled = true;
+            listBoxMessages.ItemHeight = 15;
+            listBoxMessages.Location = new Point(15, 90);
+            listBoxMessages.Name = "listBoxMessages";
+            listBoxMessages.Size = new Size(550, 244);
+            listBoxMessages.TabIndex = 5;
+            // 
             // lblUser
-            this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(15, 18);
-            this.lblUser.Name = "lblUser";
-            this.lblUser.Size = new System.Drawing.Size(47, 15);
-            this.lblUser.Text = "Usuario:";
-
+            // 
+            lblUser.AutoSize = true;
+            lblUser.Location = new Point(15, 18);
+            lblUser.Name = "lblUser";
+            lblUser.Size = new Size(50, 15);
+            lblUser.TabIndex = 0;
+            lblUser.Text = "Usuario:";
+            // 
             // lblMessage
-            this.lblMessage.AutoSize = true;
-            this.lblMessage.Location = new System.Drawing.Point(15, 53);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(58, 15);
-            this.lblMessage.Text = "Mensaje:";
-
+            // 
+            lblMessage.AutoSize = true;
+            lblMessage.Location = new Point(15, 53);
+            lblMessage.Name = "lblMessage";
+            lblMessage.Size = new Size(54, 15);
+            lblMessage.TabIndex = 1;
+            lblMessage.Text = "Mensaje:";
+            // 
+            // btnRegister
+            // 
+            btnRegister.Location = new Point(408, 15);
+            btnRegister.Name = "btnRegister";
+            btnRegister.Size = new Size(75, 23);
+            btnRegister.TabIndex = 6;
+            btnRegister.Text = "Registrar";
+            btnRegister.UseVisualStyleBackColor = true;
+            btnRegister.Click += btnRegister_Click;
+            // 
             // MainForm
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.ClientSize = new System.Drawing.Size(584, 361);
-            this.Controls.Add(this.lblUser);
-            this.Controls.Add(this.lblMessage);
-            this.Controls.Add(this.txtUser);
-            this.Controls.Add(this.txtMessage);
-            this.Controls.Add(this.btnSend);
-            this.Controls.Add(this.listBoxMessages);
-            this.Name = "MainForm";
-            this.Text = "Chat Online";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            ClientSize = new Size(584, 361);
+            Controls.Add(btnRegister);
+            Controls.Add(lblUser);
+            Controls.Add(lblMessage);
+            Controls.Add(txtUser);
+            Controls.Add(txtMessage);
+            Controls.Add(btnSend);
+            Controls.Add(listBoxMessages);
+            Name = "MainForm";
+            Text = "Chat Online";
+            Load += MainForm_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
+        private Button btnRegister;
     }
 }

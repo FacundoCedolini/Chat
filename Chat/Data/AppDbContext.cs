@@ -11,7 +11,7 @@ namespace Chat.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MessagingAppDb;Integrated Security=True");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=ChatAppDb;Trusted_Connection=True;TrustServerCertificate=True");
         }
     }
 }

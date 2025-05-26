@@ -1,8 +1,0 @@
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.csproj.AssemblyReference.cache
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.Forms.MainForm.resources
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.csproj.GenerateResource.cache
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.GeneratedMSBuildEditorConfig.editorconfig
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.AssemblyInfoInputs.cache
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.AssemblyInfo.cs
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.csproj.CoreCompileInputs.cache
-C:\Proyectos\Programacion 2\Chat\Chat\Chat\obj\Debug\net8.0-windows\Chat.sourcelink.json

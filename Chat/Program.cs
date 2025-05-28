@@ -3,20 +3,14 @@ using Chat.Forms;
 using Chat.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-//ApplicationConfiguration.Initialize();
-Application.EnableVisualStyles();
-Application.SetCompatibleTextRenderingDefault(false);
+ApplicationConfiguration.Initialize();
 
-// Iniciar el servidor web (SignalR + EF Core) en un hilo separado
 Task.Run(() =>
 {
     var host = new WebHostBuilder()
@@ -40,5 +34,13 @@ Task.Run(() =>
     host.Run();
 });
 
-// Lanzar la UI WinForms
-Application.Run(new MainForm());
+using var loginForm = new LoginForm();
+if (loginForm.ShowDialog() == DialogResult.OK && loginForm.LoggedInUser != null)
+{
+    Application.Run(new MainForm(loginForm.LoggedInUser));
+}
+else
+{
+    Application.Exit();
+}
+

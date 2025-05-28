@@ -27,7 +27,6 @@ namespace Chat.Forms
             listBoxMessages = new ListBox();
             lblUser = new Label();
             lblMessage = new Label();
-            btnRegister = new Button();
             SuspendLayout();
             // 
             // txtUser
@@ -81,20 +80,9 @@ namespace Chat.Forms
             lblMessage.TabIndex = 1;
             lblMessage.Text = "Mensaje:";
             // 
-            // btnRegister
-            // 
-            btnRegister.Location = new Point(408, 15);
-            btnRegister.Name = "btnRegister";
-            btnRegister.Size = new Size(75, 23);
-            btnRegister.TabIndex = 6;
-            btnRegister.Text = "Registrar";
-            btnRegister.UseVisualStyleBackColor = true;
-            btnRegister.Click += btnRegister_Click;
-            // 
             // MainForm
             // 
             ClientSize = new Size(584, 361);
-            Controls.Add(btnRegister);
             Controls.Add(lblUser);
             Controls.Add(lblMessage);
             Controls.Add(txtUser);
@@ -107,6 +95,5 @@ namespace Chat.Forms
             ResumeLayout(false);
             PerformLayout();
         }
-        private Button btnRegister;
     }
 }

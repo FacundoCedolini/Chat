@@ -1,5 +1,6 @@
 ﻿using Chat.Data;
 using Chat.Models;
+using Chat.Services;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -8,9 +9,13 @@ namespace Chat.Forms
 {
     public partial class RegisterForm : Form
     {
+
+        private readonly UserService _userService;
+
         public RegisterForm()
         {
             InitializeComponent();
+            _userService = new UserService(new AppDbContext());
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -24,36 +29,17 @@ namespace Chat.Forms
                 return;
             }
 
-            using (var db = new AppDbContext())
+            var success = _userService.Register(username, password);
+
+            if (success)
             {
-                if (db.Users.Any(u => u.Username == username))
-                {
-                    MessageBox.Show("El nombre de usuario ya existe.");
-                    return;
-                }
-
-                var user = new User
-                {
-                    Username = username,
-                    PasswordHash = ComputeSha256Hash(password)
-                };
-
-                db.Users.Add(user);
-                db.SaveChanges();
-
-                MessageBox.Show("Usuario registrado con éxito.");
+                MessageBox.Show("Registro exitoso. Ahora puede iniciar sesión.");
                 this.Close();
             }
-        }
-
-        private static string ComputeSha256Hash(string rawData)
-        {
-            using var sha256 = SHA256.Create();
-            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-            var builder = new StringBuilder();
-            foreach (var b in bytes)
-                builder.Append(b.ToString("x2"));
-            return builder.ToString();
+            else
+            {
+                MessageBox.Show("El nombre de usuario ya está en uso. Por favor, elija otro.");
+            }
         }
     }
 }

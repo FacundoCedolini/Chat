@@ -1,19 +1,39 @@
 ﻿// Forms/MainForm.cs
+using Chat.Models;
+using Chat.Services;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Chat.Forms
 {
     public partial class MainForm : Form
     {
         private HubConnection _connection;
+        private readonly UserService _userService;
+
+        private User _currentUser;
 
         public MainForm()
         {
             InitializeComponent();
             InitSignalR();
         }
+
+        public MainForm(UserService userService)
+        {
+            _userService = userService;
+            InitializeComponent();
+            InitSignalR();
+        }
+
+        public MainForm(User currentUser)
+        {
+            InitializeComponent();
+            _currentUser = currentUser;
+            this.Text = $"Chat - Bienvenido {_currentUser.Username}";
+        }
+
 
         private async void InitSignalR()
         {
@@ -54,12 +74,6 @@ namespace Chat.Forms
             {
                 MessageBox.Show($"Error sending message: {ex.Message}");
             }
-        }
-
-        private void btnRegister_Click(object sender, EventArgs e)
-        {
-            var registerForm = new RegisterForm();
-            registerForm.ShowDialog();
         }
 
         private void MainForm_Load(object sender, EventArgs e)

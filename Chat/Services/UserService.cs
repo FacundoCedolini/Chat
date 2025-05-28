@@ -14,6 +14,13 @@ namespace Chat.Services
             _context = context;
         }
 
+        public User? GetUser(string username, string password)
+        {
+            var hash = HashPassword(password);
+            return _context.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == hash);
+        }
+
+
         public bool Register(string username, string password)
         {
             if (_context.Users.Any(u => u.Username == username))
@@ -38,7 +45,7 @@ namespace Chat.Services
             var user = _context.Users.FirstOrDefault(u => u.Username == username);
             if (user == null) return false;
 
-            return VerifyPassword(password, user.PasswordHash);
+            return ValidateUser(password, user.PasswordHash);
         }
 
         private string HashPassword(string password)
@@ -53,6 +60,12 @@ namespace Chat.Services
         {
             var inputHash = HashPassword(inputPassword);
             return inputHash == storedHash;
+        }
+
+        public bool ValidateUser(string username, string password)
+        {
+            string hash = HashPassword(password);
+            return _context.Users.Any(u => u.Username == username && u.PasswordHash == hash);
         }
     }
 }

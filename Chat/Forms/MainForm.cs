@@ -1,19 +1,30 @@
 ﻿// Forms/MainForm.cs
+using Chat.Services;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Chat.Forms
 {
     public partial class MainForm : Form
     {
         private HubConnection _connection;
+        private readonly UserService _userService;
+
 
         public MainForm()
         {
             InitializeComponent();
             InitSignalR();
         }
+
+        public MainForm(UserService userService)
+        {
+            _userService = userService;
+            InitializeComponent();
+            InitSignalR();
+        }
+
 
         private async void InitSignalR()
         {

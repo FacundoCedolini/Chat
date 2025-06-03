@@ -32,11 +32,14 @@ namespace Chat.Forms
             InitializeComponent();
             _currentUser = currentUser;
             this.Text = $"Chat - Bienvenido {_currentUser.Username}";
+            InitSignalR();
         }
 
 
         private async void InitSignalR()
         {
+            MessageBox.Show("Inicializando SignalR...");
+
             _connection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:5000/chatHub")
                 .WithAutomaticReconnect()

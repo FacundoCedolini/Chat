@@ -4,8 +4,6 @@ namespace Chat.Forms
     partial class MainForm
     {
         private System.ComponentModel.IContainer components = null;
-
-        private System.Windows.Forms.TextBox txtUser;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.ListBox listBoxMessages;
@@ -21,31 +19,24 @@ namespace Chat.Forms
 
         private void InitializeComponent()
         {
-            txtUser = new TextBox();
             txtMessage = new TextBox();
             btnSend = new Button();
             listBoxMessages = new ListBox();
             lblUser = new Label();
             lblMessage = new Label();
+            userName = new Label();
             SuspendLayout();
-            // 
-            // txtUser
-            // 
-            txtUser.Location = new Point(80, 15);
-            txtUser.Name = "txtUser";
-            txtUser.Size = new Size(200, 23);
-            txtUser.TabIndex = 2;
             // 
             // txtMessage
             // 
-            txtMessage.Location = new Point(80, 50);
+            txtMessage.Location = new Point(75, 310);
             txtMessage.Name = "txtMessage";
             txtMessage.Size = new Size(400, 23);
             txtMessage.TabIndex = 3;
             // 
             // btnSend
             // 
-            btnSend.Location = new Point(490, 50);
+            btnSend.Location = new Point(487, 310);
             btnSend.Name = "btnSend";
             btnSend.Size = new Size(75, 23);
             btnSend.TabIndex = 4;
@@ -57,7 +48,7 @@ namespace Chat.Forms
             // 
             listBoxMessages.FormattingEnabled = true;
             listBoxMessages.ItemHeight = 15;
-            listBoxMessages.Location = new Point(15, 90);
+            listBoxMessages.Location = new Point(12, 12);
             listBoxMessages.Name = "listBoxMessages";
             listBoxMessages.Size = new Size(550, 244);
             listBoxMessages.TabIndex = 5;
@@ -65,7 +56,7 @@ namespace Chat.Forms
             // lblUser
             // 
             lblUser.AutoSize = true;
-            lblUser.Location = new Point(15, 18);
+            lblUser.Location = new Point(12, 279);
             lblUser.Name = "lblUser";
             lblUser.Size = new Size(50, 15);
             lblUser.TabIndex = 0;
@@ -74,18 +65,27 @@ namespace Chat.Forms
             // lblMessage
             // 
             lblMessage.AutoSize = true;
-            lblMessage.Location = new Point(15, 53);
+            lblMessage.Location = new Point(12, 313);
             lblMessage.Name = "lblMessage";
             lblMessage.Size = new Size(54, 15);
             lblMessage.TabIndex = 1;
             lblMessage.Text = "Mensaje:";
             // 
+            // userName
+            // 
+            userName.AutoSize = true;
+            userName.Location = new Point(75, 279);
+            userName.Name = "userName";
+            userName.Size = new Size(38, 15);
+            userName.TabIndex = 6;
+            userName.Text = "label1";
+            // 
             // MainForm
             // 
             ClientSize = new Size(584, 361);
+            Controls.Add(userName);
             Controls.Add(lblUser);
             Controls.Add(lblMessage);
-            Controls.Add(txtUser);
             Controls.Add(txtMessage);
             Controls.Add(btnSend);
             Controls.Add(listBoxMessages);
@@ -95,5 +95,6 @@ namespace Chat.Forms
             ResumeLayout(false);
             PerformLayout();
         }
+        private Label userName;
     }
 }

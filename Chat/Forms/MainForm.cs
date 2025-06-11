@@ -65,12 +65,12 @@ namespace Chat.Forms
 
         private async void btnSend_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtUser.Text) || string.IsNullOrWhiteSpace(txtMessage.Text))
+            if (string.IsNullOrWhiteSpace(userName.Text) || string.IsNullOrWhiteSpace(txtMessage.Text))
                 return;
 
             try
             {
-                await _connection.InvokeAsync("SendMessage", txtUser.Text, txtMessage.Text);
+                await _connection.InvokeAsync("SendMessage", userName.Text, txtMessage.Text);
                 txtMessage.Clear();
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace Chat.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            userName.Text = _currentUser?.Username ?? "Usuario Desconocido";
         }
     }
 }

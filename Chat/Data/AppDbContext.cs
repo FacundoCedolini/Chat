@@ -11,7 +11,7 @@ namespace Chat.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=ChatAppDb;Trusted_Connection=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("workstation id=CodaChatAppDb.mssql.somee.com;packet size=4096;user id=Firo7_SQLLogin_2;pwd=yk5q5yi9so;data source=CodaChatAppDb.mssql.somee.com;persist security info=False;initial catalog=CodaChatAppDb;TrustServerCertificate=True");
         }
     }
 }

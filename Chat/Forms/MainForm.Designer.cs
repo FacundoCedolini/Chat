@@ -25,6 +25,8 @@ namespace Chat.Forms
             lblUser = new Label();
             lblMessage = new Label();
             userName = new Label();
+            txtToUser = new TextBox();
+            lblDestinatario = new Label();
             SuspendLayout();
             // 
             // txtMessage
@@ -80,9 +82,27 @@ namespace Chat.Forms
             userName.TabIndex = 6;
             userName.Text = "label1";
             // 
+            // txtToUser
+            // 
+            txtToUser.Location = new Point(462, 276);
+            txtToUser.Name = "txtToUser";
+            txtToUser.Size = new Size(100, 23);
+            txtToUser.TabIndex = 7;
+            // 
+            // lblDestinatario
+            // 
+            lblDestinatario.AutoSize = true;
+            lblDestinatario.Location = new Point(405, 279);
+            lblDestinatario.Name = "lblDestinatario";
+            lblDestinatario.Size = new Size(51, 15);
+            lblDestinatario.TabIndex = 8;
+            lblDestinatario.Text = "Enviar a:";
+            // 
             // MainForm
             // 
             ClientSize = new Size(584, 361);
+            Controls.Add(lblDestinatario);
+            Controls.Add(txtToUser);
             Controls.Add(userName);
             Controls.Add(lblUser);
             Controls.Add(lblMessage);
@@ -96,5 +116,7 @@ namespace Chat.Forms
             PerformLayout();
         }
         private Label userName;
+        private TextBox txtToUser;
+        private Label lblDestinatario;
     }
 }

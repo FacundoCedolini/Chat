@@ -41,15 +41,16 @@ namespace Chat.Forms
             MessageBox.Show("Inicializando SignalR...");
 
             _connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/chatHub")
-                .WithAutomaticReconnect()
-                .Build();
+            .WithUrl($"http://localhost:5000/chatHub?username={_currentUser.Username}")
+            .WithAutomaticReconnect()
+            .Build();
 
             _connection.On<string, string>("ReceiveMessage", (user, message) =>
             {
                 Invoke(() =>
                 {
-                    listBoxMessages.Items.Add($"{user}: {message}");
+                    string tag = string.IsNullOrWhiteSpace(txtToUser.Text) ? "[General]" : "[Privado]";
+                    listBoxMessages.Items.Add($"{tag} {user}: {message}");
                 });
             });
 
@@ -65,12 +66,15 @@ namespace Chat.Forms
 
         private async void btnSend_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(userName.Text) || string.IsNullOrWhiteSpace(txtMessage.Text))
+            string toUser = txtToUser.Text.Trim(); // El destinatario (si hay)
+            string message = txtMessage.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(message))
                 return;
 
             try
             {
-                await _connection.InvokeAsync("SendMessage", userName.Text, txtMessage.Text);
+                await _connection.InvokeAsync("SendMessage", toUser, message);
                 txtMessage.Clear();
             }
             catch (Exception ex)

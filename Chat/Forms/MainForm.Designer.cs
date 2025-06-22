@@ -27,6 +27,8 @@ namespace Chat.Forms
             userName = new Label();
             txtToUser = new TextBox();
             lblDestinatario = new Label();
+            listBoxUsers = new ListBox();
+            label1 = new Label();
             SuspendLayout();
             // 
             // txtMessage
@@ -52,7 +54,7 @@ namespace Chat.Forms
             listBoxMessages.ItemHeight = 15;
             listBoxMessages.Location = new Point(12, 12);
             listBoxMessages.Name = "listBoxMessages";
-            listBoxMessages.Size = new Size(550, 244);
+            listBoxMessages.Size = new Size(420, 244);
             listBoxMessages.TabIndex = 5;
             // 
             // lblUser
@@ -98,9 +100,30 @@ namespace Chat.Forms
             lblDestinatario.TabIndex = 8;
             lblDestinatario.Text = "Enviar a:";
             // 
+            // listBoxUsers
+            // 
+            listBoxUsers.FormattingEnabled = true;
+            listBoxUsers.ItemHeight = 15;
+            listBoxUsers.Location = new Point(442, 42);
+            listBoxUsers.Name = "listBoxUsers";
+            listBoxUsers.Size = new Size(120, 214);
+            listBoxUsers.TabIndex = 9;
+            listBoxUsers.SelectedIndexChanged += listBoxUsers_SelectedIndexChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(442, 12);
+            label1.Name = "label1";
+            label1.Size = new Size(119, 15);
+            label1.TabIndex = 10;
+            label1.Text = "Usuarios conectados:";
+            // 
             // MainForm
             // 
             ClientSize = new Size(584, 361);
+            Controls.Add(label1);
+            Controls.Add(listBoxUsers);
             Controls.Add(lblDestinatario);
             Controls.Add(txtToUser);
             Controls.Add(userName);
@@ -118,5 +141,7 @@ namespace Chat.Forms
         private Label userName;
         private TextBox txtToUser;
         private Label lblDestinatario;
+        private ListBox listBoxUsers;
+        private Label label1;
     }
 }

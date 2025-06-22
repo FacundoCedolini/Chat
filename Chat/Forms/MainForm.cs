@@ -13,6 +13,8 @@ namespace Chat.Forms
         private readonly UserService _userService;
 
         private User _currentUser;
+        private string? _currentChatUser = null;
+
 
         public MainForm()
         {
@@ -51,6 +53,19 @@ namespace Chat.Forms
                 });
             });
 
+            _connection.On<List<string>>("UsersUpdated", (users) =>
+            {
+                Invoke(() =>
+                {
+                    listBoxUsers.Items.Clear();
+                    foreach (var user in users)
+                    {
+                        if (user != _currentUser.Username)
+                            listBoxUsers.Items.Add(user);
+                    }
+                });
+            });
+
             try
             {
                 await _connection.StartAsync();
@@ -63,11 +78,11 @@ namespace Chat.Forms
 
         private async void btnSend_Click(object sender, EventArgs e)
         {
-            string toUser = txtToUser.Text.Trim(); // El destinatario (si hay)
             string message = txtMessage.Text.Trim();
-
             if (string.IsNullOrWhiteSpace(message))
                 return;
+
+            string toUser = _currentChatUser ?? ""; // "" para general
 
             try
             {
@@ -76,7 +91,7 @@ namespace Chat.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error sending message: {ex.Message}");
+                MessageBox.Show($"Error al enviar mensaje: {ex.Message}");
             }
         }
 
@@ -84,18 +99,55 @@ namespace Chat.Forms
         {
             userName.Text = _currentUser?.Username ?? "Usuario Desconocido";
 
+            LoadMessages();
+        }
+
+        private async Task LoadUsers()
+        {
             try
             {
-                var history = await _connection.InvokeAsync<List<Models.Message>>("GetMessageHistory", (string?)null);
+                var users = await _connection.InvokeAsync<List<string>>("GetConnectedUsers");
 
-                foreach (var msg in history)
+                listBoxUsers.Items.Clear();
+                foreach (var user in users)
                 {
-                    listBoxMessages.Items.Add($"{msg.FromUsername}: {msg.Content}");
+                    if (user != _currentUser.Username)
+                        listBoxUsers.Items.Add(user);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error cargando historial: " + ex.Message);
+                MessageBox.Show("Error al cargar usuarios conectados: " + ex.Message);
+            }
+        }
+
+        private async Task LoadMessages(string? withUser = null)
+        {
+            try
+            {
+                listBoxMessages.Items.Clear();
+
+                var messages = await _connection.InvokeAsync<List<Models.Message>>("GetMessageHistory", withUser);
+
+                foreach (var msg in messages.OrderBy(m => m.Timestamp))
+                {
+                    string tag = string.IsNullOrWhiteSpace(msg.ToUsername) ? "[General]" : "[Privado]";
+                    listBoxMessages.Items.Add($"{tag} {msg.FromUsername}: {msg.Content}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar mensajes: " + ex.Message);
+            }
+        }
+
+        private async void listBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedUser = listBoxUsers.SelectedItem?.ToString();
+            if (!string.IsNullOrWhiteSpace(selectedUser))
+            {
+                _currentChatUser = selectedUser;
+                await LoadMessages(_currentChatUser);
             }
         }
     }

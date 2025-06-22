@@ -48,8 +48,16 @@ namespace Chat.Forms
             {
                 Invoke(() =>
                 {
-                    string tag = string.IsNullOrWhiteSpace(txtToUser.Text) ? "[General]" : "[Privado]";
-                    listBoxMessages.Items.Add($"{tag} {user}: {message}");
+                    bool isGeneral = string.IsNullOrWhiteSpace(_currentChatUser);
+                    bool isFromCurrent = user == _currentChatUser;
+                    bool isToCurrent = user == _currentUser.Username;
+
+                    if ((isGeneral && string.IsNullOrWhiteSpace(txtToUser.Text)) ||
+                        (!isGeneral && (isFromCurrent || isToCurrent)))
+                    {
+                        string tag = isGeneral ? "[General]" : "[Privado]";
+                        listBoxMessages.Items.Add($"{tag} {user}: {message}");
+                    }
                 });
             });
 

@@ -1,7 +1,10 @@
 ﻿// Hubs/ChatHub.cs
 using Chat.Data;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Chat.Models;
+using Message = Chat.Models.Message;
 
 namespace Chat.Hubs
 {
@@ -14,6 +17,21 @@ namespace Chat.Hubs
 
             if (string.IsNullOrEmpty(fromUser))
                 return;
+
+            // Guardar mensaje
+            using (var db = new AppDbContext())
+            {
+                var msg = new Message
+                {
+                    FromUsername = fromUser,
+                    ToUsername = string.IsNullOrWhiteSpace(toUser) ? null : toUser,
+                    Content = message,
+                    Timestamp = DateTime.Now
+                };
+
+                db.Messages.Add(msg);
+                await db.SaveChangesAsync();
+            }
 
             if (string.IsNullOrWhiteSpace(toUser))
             {
@@ -35,11 +53,9 @@ namespace Chat.Hubs
             }
         }
 
-
         public override Task OnConnectedAsync()
         {
-            var httpContext = Context.GetHttpContext();
-            var username = httpContext?.Request.Query["username"].ToString();
+            var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
 
             if (!string.IsNullOrEmpty(username))
             {
@@ -51,15 +67,55 @@ namespace Chat.Hubs
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            var userToRemove = ConnectedUsers.Users
-                .FirstOrDefault(kvp => kvp.Value == Context.ConnectionId).Key;
+            var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
 
-            if (!string.IsNullOrEmpty(userToRemove))
+            if (!string.IsNullOrEmpty(username))
             {
-                ConnectedUsers.Users.TryRemove(userToRemove, out _);
+                ConnectedUsers.Users.TryRemove(username, out _);
             }
 
             return base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task<List<Message>> GetMessageHistory(string? withUser = null)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                var currentEntry = ConnectedUsers.Users
+                    .FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
+
+                if (string.IsNullOrEmpty(currentEntry.Key))
+                {
+                    Console.WriteLine("No se encontró el usuario conectado.");
+                    return new List<Message>();
+                }
+
+                var currentUser = currentEntry.Key;
+
+                if (string.IsNullOrWhiteSpace(withUser))
+                {
+                    return await db.Messages
+                        .Where(m => m.ToUsername == null)
+                        .OrderBy(m => m.Timestamp)
+                        .ToListAsync();
+                }
+                else
+                {
+                    return await db.Messages
+                        .Where(m =>
+                            (m.FromUsername == currentUser && m.ToUsername == withUser) ||
+                            (m.FromUsername == withUser && m.ToUsername == currentUser))
+                        .OrderBy(m => m.Timestamp)
+                        .ToListAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en GetMessageHistory: " + ex.Message);
+                return new List<Message>();
+            }
         }
 
     }

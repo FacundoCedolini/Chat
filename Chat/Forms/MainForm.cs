@@ -38,11 +38,8 @@ namespace Chat.Forms
 
         private async void InitSignalR()
         {
-            MessageBox.Show("Inicializando SignalR...");
-
             _connection = new HubConnectionBuilder()
-            .WithUrl($"http://localhost:5000/chatHub?username={_currentUser.Username}")
-            .WithAutomaticReconnect()
+            .WithUrl("http://localhost:5000/chathub?username=" + _currentUser.Username)
             .Build();
 
             _connection.On<string, string>("ReceiveMessage", (user, message) =>
@@ -83,9 +80,23 @@ namespace Chat.Forms
             }
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             userName.Text = _currentUser?.Username ?? "Usuario Desconocido";
+
+            try
+            {
+                var history = await _connection.InvokeAsync<List<Models.Message>>("GetMessageHistory", (string?)null);
+
+                foreach (var msg in history)
+                {
+                    listBoxMessages.Items.Add($"{msg.FromUsername}: {msg.Content}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error cargando historial: " + ex.Message);
+            }
         }
     }
 }

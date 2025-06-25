@@ -52,8 +52,7 @@ namespace Chat.Forms
                     bool isFromCurrent = user == _currentChatUser;
                     bool isToCurrent = user == _currentUser.Username;
 
-                    if ((isGeneral && string.IsNullOrWhiteSpace(txtToUser.Text)) ||
-                        (!isGeneral && (isFromCurrent || isToCurrent)))
+                    if ((isGeneral) || (!isGeneral && (isFromCurrent || isToCurrent)))
                     {
                         string tag = isGeneral ? "[General]" : "[Privado]";
                         listBoxMessages.Items.Add($"{tag} {user}: {message}");
@@ -103,6 +102,14 @@ namespace Chat.Forms
             }
         }
 
+        private async void btnVolverGeneral_Click(object? sender, EventArgs e)
+        {
+            _currentChatUser = null;
+            btnVolverGeneral.Visible = false;
+            await LoadMessages();
+            listBoxUsers.ClearSelected();
+        }
+
         private async void MainForm_Load(object sender, EventArgs e)
         {
             userName.Text = _currentUser?.Username ?? "Usuario Desconocido";
@@ -142,6 +149,9 @@ namespace Chat.Forms
                     string tag = string.IsNullOrWhiteSpace(msg.ToUsername) ? "[General]" : "[Privado]";
                     listBoxMessages.Items.Add($"{tag} {msg.FromUsername}: {msg.Content}");
                 }
+
+                btnVolverGeneral.Visible = !string.IsNullOrWhiteSpace(withUser);
+
             }
             catch (Exception ex)
             {
@@ -155,6 +165,7 @@ namespace Chat.Forms
             if (!string.IsNullOrWhiteSpace(selectedUser))
             {
                 _currentChatUser = selectedUser;
+                btnVolverGeneral.Visible = true;
                 await LoadMessages(_currentChatUser);
             }
         }

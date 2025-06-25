@@ -6,6 +6,7 @@ namespace Chat.Forms
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnSend;
+        private System.Windows.Forms.Button btnVolverGeneral;
         private System.Windows.Forms.ListBox listBoxMessages;
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblMessage;
@@ -25,8 +26,6 @@ namespace Chat.Forms
             lblUser = new Label();
             lblMessage = new Label();
             userName = new Label();
-            txtToUser = new TextBox();
-            lblDestinatario = new Label();
             listBoxUsers = new ListBox();
             label1 = new Label();
             SuspendLayout();
@@ -47,6 +46,18 @@ namespace Chat.Forms
             btnSend.Text = "Enviar";
             btnSend.UseVisualStyleBackColor = true;
             btnSend.Click += btnSend_Click;
+            // 
+            // btnVolverGeneral
+            // 
+            btnVolverGeneral = new Button();
+            btnVolverGeneral.Location = new Point(442, 262);
+            btnVolverGeneral.Name = "btnVolverGeneral";
+            btnVolverGeneral.Size = new Size(135, 23);
+            btnVolverGeneral.TabIndex = 11;
+            btnVolverGeneral.Text = "Volver al General";
+            btnVolverGeneral.UseVisualStyleBackColor = true;
+            btnVolverGeneral.Visible = false;
+            btnVolverGeneral.Click += btnVolverGeneral_Click;
             // 
             // listBoxMessages
             // 
@@ -84,22 +95,6 @@ namespace Chat.Forms
             userName.TabIndex = 6;
             userName.Text = "label1";
             // 
-            // txtToUser
-            // 
-            txtToUser.Location = new Point(462, 276);
-            txtToUser.Name = "txtToUser";
-            txtToUser.Size = new Size(100, 23);
-            txtToUser.TabIndex = 7;
-            // 
-            // lblDestinatario
-            // 
-            lblDestinatario.AutoSize = true;
-            lblDestinatario.Location = new Point(405, 279);
-            lblDestinatario.Name = "lblDestinatario";
-            lblDestinatario.Size = new Size(51, 15);
-            lblDestinatario.TabIndex = 8;
-            lblDestinatario.Text = "Enviar a:";
-            // 
             // listBoxUsers
             // 
             listBoxUsers.FormattingEnabled = true;
@@ -124,14 +119,13 @@ namespace Chat.Forms
             ClientSize = new Size(584, 361);
             Controls.Add(label1);
             Controls.Add(listBoxUsers);
-            Controls.Add(lblDestinatario);
-            Controls.Add(txtToUser);
             Controls.Add(userName);
             Controls.Add(lblUser);
             Controls.Add(lblMessage);
             Controls.Add(txtMessage);
             Controls.Add(btnSend);
             Controls.Add(listBoxMessages);
+            Controls.Add(btnVolverGeneral);
             Name = "MainForm";
             Text = "Chat Online";
             Load += MainForm_Load;
@@ -139,9 +133,8 @@ namespace Chat.Forms
             PerformLayout();
         }
         private Label userName;
-        private TextBox txtToUser;
-        private Label lblDestinatario;
         private ListBox listBoxUsers;
         private Label label1;
+
     }
 }

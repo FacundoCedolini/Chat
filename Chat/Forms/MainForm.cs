@@ -2,6 +2,7 @@
 using Chat.Models;
 using Chat.Services;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Drawing.Drawing2D;
 using System;
 using System.Windows.Forms;
 
@@ -35,8 +36,10 @@ namespace Chat.Forms
             _currentUser = currentUser;
             this.Text = $"Chat - Bienvenido {_currentUser.Username}";
             InitSignalR();
-        }
 
+            UIUtils.RedondearBoton(btnSend);
+            UIUtils.RedondearBoton(btnVolverGeneral);
+        }
 
         private async void InitSignalR()
         {

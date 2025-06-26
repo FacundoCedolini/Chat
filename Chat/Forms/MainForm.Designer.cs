@@ -28,95 +28,117 @@ namespace Chat.Forms
             userName = new Label();
             listBoxUsers = new ListBox();
             label1 = new Label();
+            btnVolverGeneral = new Button();
             SuspendLayout();
             // 
             // txtMessage
             // 
-            txtMessage.Location = new Point(75, 310);
+            txtMessage.BackColor = Color.FromArgb(64, 68, 75);
+            txtMessage.BorderStyle = BorderStyle.FixedSingle;
+            txtMessage.ForeColor = Color.FromArgb(220, 221, 222);
+            txtMessage.Location = new Point(95, 310);
             txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(400, 23);
+            txtMessage.Size = new Size(380, 30);
             txtMessage.TabIndex = 3;
             // 
             // btnSend
             // 
+            btnSend.BackColor = Color.FromArgb(88, 101, 242);
+            btnSend.FlatAppearance.BorderSize = 0;
+            btnSend.FlatStyle = FlatStyle.Flat;
+            btnSend.ForeColor = Color.White;
             btnSend.Location = new Point(487, 310);
             btnSend.Name = "btnSend";
-            btnSend.Size = new Size(75, 23);
+            btnSend.Size = new Size(110, 35);
             btnSend.TabIndex = 4;
             btnSend.Text = "Enviar";
-            btnSend.UseVisualStyleBackColor = true;
+            btnSend.UseVisualStyleBackColor = false;
             btnSend.Click += btnSend_Click;
-            // 
-            // btnVolverGeneral
-            // 
-            btnVolverGeneral = new Button();
-            btnVolverGeneral.Location = new Point(442, 262);
-            btnVolverGeneral.Name = "btnVolverGeneral";
-            btnVolverGeneral.Size = new Size(135, 23);
-            btnVolverGeneral.TabIndex = 11;
-            btnVolverGeneral.Text = "Volver al General";
-            btnVolverGeneral.UseVisualStyleBackColor = true;
-            btnVolverGeneral.Visible = false;
-            btnVolverGeneral.Click += btnVolverGeneral_Click;
             // 
             // listBoxMessages
             // 
+            listBoxMessages.BackColor = Color.FromArgb(47, 49, 54);
+            listBoxMessages.BorderStyle = BorderStyle.None;
+            listBoxMessages.ForeColor = Color.FromArgb(220, 221, 222);
             listBoxMessages.FormattingEnabled = true;
-            listBoxMessages.ItemHeight = 15;
+            listBoxMessages.ItemHeight = 23;
             listBoxMessages.Location = new Point(12, 12);
             listBoxMessages.Name = "listBoxMessages";
-            listBoxMessages.Size = new Size(420, 244);
+            listBoxMessages.Size = new Size(420, 230);
             listBoxMessages.TabIndex = 5;
             // 
             // lblUser
             // 
             lblUser.AutoSize = true;
+            lblUser.ForeColor = Color.FromArgb(220, 221, 222);
             lblUser.Location = new Point(12, 279);
             lblUser.Name = "lblUser";
-            lblUser.Size = new Size(50, 15);
+            lblUser.Size = new Size(72, 23);
             lblUser.TabIndex = 0;
             lblUser.Text = "Usuario:";
             // 
             // lblMessage
             // 
             lblMessage.AutoSize = true;
+            lblMessage.ForeColor = Color.FromArgb(220, 221, 222);
             lblMessage.Location = new Point(12, 313);
             lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(54, 15);
+            lblMessage.Size = new Size(77, 23);
             lblMessage.TabIndex = 1;
             lblMessage.Text = "Mensaje:";
             // 
             // userName
             // 
             userName.AutoSize = true;
+            userName.ForeColor = Color.FromArgb(220, 221, 222);
             userName.Location = new Point(75, 279);
             userName.Name = "userName";
-            userName.Size = new Size(38, 15);
+            userName.Size = new Size(55, 23);
             userName.TabIndex = 6;
             userName.Text = "label1";
             // 
             // listBoxUsers
             // 
+            listBoxUsers.BackColor = Color.FromArgb(47, 49, 54);
+            listBoxUsers.BorderStyle = BorderStyle.None;
+            listBoxUsers.ForeColor = Color.FromArgb(220, 221, 222);
             listBoxUsers.FormattingEnabled = true;
-            listBoxUsers.ItemHeight = 15;
+            listBoxUsers.ItemHeight = 23;
             listBoxUsers.Location = new Point(442, 42);
             listBoxUsers.Name = "listBoxUsers";
-            listBoxUsers.Size = new Size(120, 214);
+            listBoxUsers.Size = new Size(120, 207);
             listBoxUsers.TabIndex = 9;
             listBoxUsers.SelectedIndexChanged += listBoxUsers_SelectedIndexChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.FromArgb(220, 221, 222);
             label1.Location = new Point(442, 12);
             label1.Name = "label1";
-            label1.Size = new Size(119, 15);
+            label1.Size = new Size(171, 23);
             label1.TabIndex = 10;
             label1.Text = "Usuarios conectados:";
             // 
+            // btnVolverGeneral
+            // 
+            btnVolverGeneral.BackColor = Color.FromArgb(88, 101, 242);
+            btnVolverGeneral.FlatAppearance.BorderSize = 0;
+            btnVolverGeneral.FlatStyle = FlatStyle.Flat;
+            btnVolverGeneral.ForeColor = Color.White;
+            btnVolverGeneral.Location = new Point(442, 262);
+            btnVolverGeneral.Name = "btnVolverGeneral";
+            btnVolverGeneral.Size = new Size(160, 35);
+            btnVolverGeneral.TabIndex = 11;
+            btnVolverGeneral.Text = "Atras";
+            btnVolverGeneral.UseVisualStyleBackColor = false;
+            btnVolverGeneral.Visible = false;
+            btnVolverGeneral.Click += btnVolverGeneral_Click;
+            // 
             // MainForm
             // 
-            ClientSize = new Size(584, 361);
+            BackColor = Color.FromArgb(54, 57, 63);
+            ClientSize = new Size(616, 354);
             Controls.Add(label1);
             Controls.Add(listBoxUsers);
             Controls.Add(userName);
@@ -126,11 +148,14 @@ namespace Chat.Forms
             Controls.Add(btnSend);
             Controls.Add(listBoxMessages);
             Controls.Add(btnVolverGeneral);
+            Font = new Font("Segoe UI", 10F);
+            ForeColor = Color.FromArgb(220, 221, 222);
             Name = "MainForm";
             Text = "Chat Online";
             Load += MainForm_Load;
             ResumeLayout(false);
             PerformLayout();
+
         }
         private Label userName;
         private ListBox listBoxUsers;

@@ -15,71 +15,86 @@
 
         private void InitializeComponent()
         {
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.btnRegister = new System.Windows.Forms.Button();
-            this.lblUsername = new System.Windows.Forms.Label();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
+            btnRegister = new Button();
+            lblUsername = new Label();
+            lblPassword = new Label();
+            SuspendLayout();
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(30, 40);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(200, 23);
-            this.txtUsername.TabIndex = 0;
+            txtUsername.BackColor = Color.FromArgb(64, 68, 75);
+            txtUsername.BorderStyle = BorderStyle.FixedSingle;
+            txtUsername.ForeColor = Color.FromArgb(220, 221, 222);
+            txtUsername.Location = new Point(50, 46);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(200, 30);
+            txtUsername.TabIndex = 0;
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(30, 90);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(200, 23);
-            this.txtPassword.TabIndex = 1;
-            this.txtPassword.UseSystemPasswordChar = true;
+            txtPassword.BackColor = Color.FromArgb(64, 68, 75);
+            txtPassword.BorderStyle = BorderStyle.FixedSingle;
+            txtPassword.ForeColor = Color.FromArgb(220, 221, 222);
+            txtPassword.Location = new Point(50, 117);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(200, 30);
+            txtPassword.TabIndex = 1;
+            txtPassword.UseSystemPasswordChar = true;
             // 
             // btnRegister
             // 
-            this.btnRegister.Location = new System.Drawing.Point(30, 130);
-            this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(200, 30);
-            this.btnRegister.TabIndex = 2;
-            this.btnRegister.Text = "Registrar";
-            this.btnRegister.UseVisualStyleBackColor = true;
-            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            btnRegister.BackColor = Color.FromArgb(88, 101, 242);
+            btnRegister.FlatAppearance.BorderSize = 0;
+            btnRegister.FlatStyle = FlatStyle.Flat;
+            btnRegister.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnRegister.ForeColor = Color.White;
+            btnRegister.Location = new Point(50, 172);
+            btnRegister.Name = "btnRegister";
+            btnRegister.Size = new Size(200, 30);
+            btnRegister.TabIndex = 2;
+            btnRegister.Text = "Registrar";
+            btnRegister.UseVisualStyleBackColor = false;
+            btnRegister.Click += btnRegister_Click;
             // 
             // lblUsername
             // 
-            this.lblUsername.AutoSize = true;
-            this.lblUsername.Location = new System.Drawing.Point(30, 20);
-            this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(109, 15);
-            this.lblUsername.TabIndex = 3;
-            this.lblUsername.Text = "Nombre de usuario:";
+            lblUsername.AutoSize = true;
+            lblUsername.Location = new Point(50, 20);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(162, 23);
+            lblUsername.TabIndex = 3;
+            lblUsername.Text = "Nombre de usuario:";
+            lblUsername.Click += lblUsername_Click;
             // 
             // lblPassword
             // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(30, 70);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(67, 15);
-            this.lblPassword.TabIndex = 4;
-            this.lblPassword.Text = "Contraseña:";
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(50, 91);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(101, 23);
+            lblPassword.TabIndex = 4;
+            lblPassword.Text = "Contraseña:";
             // 
             // RegisterForm
             // 
-            this.AcceptButton = this.btnRegister;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 180);
-            this.Controls.Add(this.lblPassword);
-            this.Controls.Add(this.lblUsername);
-            this.Controls.Add(this.btnRegister);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.txtUsername);
-            this.Name = "RegisterForm";
-            this.Text = "Registro";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = btnRegister;
+            AutoScaleDimensions = new SizeF(9F, 23F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(54, 57, 63);
+            ClientSize = new Size(301, 243);
+            Controls.Add(lblPassword);
+            Controls.Add(lblUsername);
+            Controls.Add(btnRegister);
+            Controls.Add(txtPassword);
+            Controls.Add(txtUsername);
+            Font = new Font("Segoe UI", 10F);
+            ForeColor = Color.FromArgb(220, 221, 222);
+            Name = "RegisterForm";
+            Text = "Registro";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         private System.Windows.Forms.TextBox txtUsername;

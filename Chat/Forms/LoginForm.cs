@@ -14,6 +14,8 @@ namespace Chat.Forms
         public LoginForm()
         {
             InitializeComponent();
+            UIUtils.RedondearBoton(btnLogin);
+            UIUtils.RedondearBoton(btnRegister);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -38,9 +40,12 @@ namespace Chat.Forms
             }
 
             LoggedInUser = user;
-            MessageBox.Show($"Bienvenido, {username}!");
-            this.DialogResult = DialogResult.OK;
+            this.Hide();
+            var welcome = new WelcomeForm(LoggedInUser);
+            welcome.ShowDialog();
             this.Close();
+
+
         }
 
 

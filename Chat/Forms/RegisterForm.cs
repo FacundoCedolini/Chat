@@ -16,6 +16,7 @@ namespace Chat.Forms
         {
             InitializeComponent();
             _userService = new UserService(new AppDbContext());
+            UIUtils.RedondearBoton(btnRegister);
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -40,6 +41,11 @@ namespace Chat.Forms
             {
                 MessageBox.Show("El nombre de usuario ya está en uso. Por favor, elija otro.");
             }
+        }
+
+        private void lblUsername_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

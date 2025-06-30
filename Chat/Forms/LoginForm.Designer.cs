@@ -41,19 +41,20 @@
             txtUsername.BackColor = Color.FromArgb(64, 68, 75);
             txtUsername.BorderStyle = BorderStyle.FixedSingle;
             txtUsername.ForeColor = Color.FromArgb(220, 221, 222);
-            txtUsername.Location = new Point(332, 136);
+            txtUsername.Location = new Point(324, 137);
             txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(100, 30);
+            txtUsername.Size = new Size(118, 30);
             txtUsername.TabIndex = 0;
+            txtUsername.TextChanged += txtUsername_TextChanged;
             // 
             // txtPassword
             // 
             txtPassword.BackColor = Color.FromArgb(64, 68, 75);
             txtPassword.BorderStyle = BorderStyle.FixedSingle;
             txtPassword.ForeColor = Color.FromArgb(220, 221, 222);
-            txtPassword.Location = new Point(332, 225);
+            txtPassword.Location = new Point(324, 225);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(100, 30);
+            txtPassword.Size = new Size(118, 30);
             txtPassword.TabIndex = 1;
             txtPassword.UseSystemPasswordChar = true;
             // 
@@ -61,7 +62,7 @@
             // 
             Usuario.AutoSize = true;
             Usuario.ForeColor = Color.FromArgb(220, 221, 222);
-            Usuario.Location = new Point(332, 101);
+            Usuario.Location = new Point(348, 100);
             Usuario.Name = "Usuario";
             Usuario.Size = new Size(68, 23);
             Usuario.TabIndex = 2;
@@ -71,7 +72,7 @@
             // 
             Contraseña.AutoSize = true;
             Contraseña.ForeColor = Color.FromArgb(220, 221, 222);
-            Contraseña.Location = new Point(332, 192);
+            Contraseña.Location = new Point(335, 189);
             Contraseña.Name = "Contraseña";
             Contraseña.Size = new Size(97, 23);
             Contraseña.TabIndex = 3;

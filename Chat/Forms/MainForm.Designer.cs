@@ -29,6 +29,7 @@ namespace Chat.Forms
             listBoxUsers = new ListBox();
             label1 = new Label();
             btnVolverGeneral = new Button();
+            label2 = new Label();
             SuspendLayout();
             // 
             // txtMessage
@@ -49,7 +50,7 @@ namespace Chat.Forms
             btnSend.ForeColor = Color.White;
             btnSend.Location = new Point(487, 310);
             btnSend.Name = "btnSend";
-            btnSend.Size = new Size(110, 35);
+            btnSend.Size = new Size(110, 30);
             btnSend.TabIndex = 4;
             btnSend.Text = "Enviar";
             btnSend.UseVisualStyleBackColor = false;
@@ -62,7 +63,7 @@ namespace Chat.Forms
             listBoxMessages.ForeColor = Color.FromArgb(220, 221, 222);
             listBoxMessages.FormattingEnabled = true;
             listBoxMessages.ItemHeight = 23;
-            listBoxMessages.Location = new Point(12, 12);
+            listBoxMessages.Location = new Point(12, 33);
             listBoxMessages.Name = "listBoxMessages";
             listBoxMessages.Size = new Size(420, 230);
             listBoxMessages.TabIndex = 5;
@@ -91,7 +92,7 @@ namespace Chat.Forms
             // 
             userName.AutoSize = true;
             userName.ForeColor = Color.FromArgb(220, 221, 222);
-            userName.Location = new Point(75, 279);
+            userName.Location = new Point(79, 279);
             userName.Name = "userName";
             userName.Size = new Size(55, 23);
             userName.TabIndex = 6;
@@ -104,9 +105,9 @@ namespace Chat.Forms
             listBoxUsers.ForeColor = Color.FromArgb(220, 221, 222);
             listBoxUsers.FormattingEnabled = true;
             listBoxUsers.ItemHeight = 23;
-            listBoxUsers.Location = new Point(442, 42);
+            listBoxUsers.Location = new Point(460, 38);
             listBoxUsers.Name = "listBoxUsers";
-            listBoxUsers.Size = new Size(120, 207);
+            listBoxUsers.Size = new Size(137, 207);
             listBoxUsers.TabIndex = 9;
             listBoxUsers.SelectedIndexChanged += listBoxUsers_SelectedIndexChanged;
             // 
@@ -126,19 +127,30 @@ namespace Chat.Forms
             btnVolverGeneral.FlatAppearance.BorderSize = 0;
             btnVolverGeneral.FlatStyle = FlatStyle.Flat;
             btnVolverGeneral.ForeColor = Color.White;
-            btnVolverGeneral.Location = new Point(442, 262);
+            btnVolverGeneral.Location = new Point(487, 260);
             btnVolverGeneral.Name = "btnVolverGeneral";
-            btnVolverGeneral.Size = new Size(160, 35);
+            btnVolverGeneral.Size = new Size(110, 33);
             btnVolverGeneral.TabIndex = 11;
             btnVolverGeneral.Text = "Atras";
             btnVolverGeneral.UseVisualStyleBackColor = false;
             btnVolverGeneral.Visible = false;
             btnVolverGeneral.Click += btnVolverGeneral_Click;
             // 
-            // MainForm
+            // label2
             // 
+            label2.AutoSize = true;
+            label2.ForeColor = Color.FromArgb(220, 221, 222);
+            label2.Location = new Point(12, 7);
+            label2.Name = "label2";
+            label2.Size = new Size(59, 23);
+            label2.TabIndex = 12;
+            label2.Text = "Label2";
+            // 
+            // MainForm
+            //
             BackColor = Color.FromArgb(54, 57, 63);
-            ClientSize = new Size(616, 354);
+            ClientSize = new Size(622, 364);
+            Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(listBoxUsers);
             Controls.Add(userName);
@@ -155,11 +167,10 @@ namespace Chat.Forms
             Load += MainForm_Load;
             ResumeLayout(false);
             PerformLayout();
-
         }
         private Label userName;
         private ListBox listBoxUsers;
         private Label label1;
-
+        private Label label2;
     }
 }

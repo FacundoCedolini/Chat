@@ -1,6 +1,6 @@
 ﻿namespace Chat.Forms
 {
-    partial class WelcomeForm
+    partial class SuccessForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,21 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lblWelcome = new Label();
+            lblMessage = new Label();
             btnOk = new Button();
             SuspendLayout();
             // 
-            // lblWelcome
+            // lblMessage
             // 
-            lblWelcome.AutoSize = true;
-            lblWelcome.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblWelcome.ForeColor = Color.FromArgb(220, 221, 222);
-            lblWelcome.Location = new Point(37, 34);
-            lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(132, 28);
-            lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "¡Bienvenido!";
-            lblWelcome.Click += lblWelcome_Click;
+            lblMessage.AutoSize = true;
+            lblMessage.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblMessage.ForeColor = Color.FromArgb(220, 221, 222);
+            lblMessage.Location = new Point(38, 35);
+            lblMessage.Name = "lblMessage";
+            lblMessage.Size = new Size(180, 28);
+            lblMessage.TabIndex = 0;
+            lblMessage.Text = "¡Registro exitoso!";
             // 
             // btnOk
             // 
@@ -51,37 +50,38 @@
             btnOk.FlatStyle = FlatStyle.Flat;
             btnOk.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnOk.ForeColor = Color.White;
-            btnOk.Location = new Point(80, 80);
+            btnOk.Location = new Point(182, 125);
             btnOk.Name = "btnOk";
-            btnOk.Size = new Size(100, 35);
+            btnOk.Size = new Size(94, 29);
             btnOk.TabIndex = 1;
             btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = false;
             btnOk.Click += btnOk_Click;
             // 
-            // WelcomeForm
+            // SuccessForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(54, 57, 63);
-            ClientSize = new Size(260, 140);
+            ClientSize = new Size(463, 200);
             Controls.Add(btnOk);
-            Controls.Add(lblWelcome);
+            Controls.Add(lblMessage);
+            Font = new Font("Segoe UI", 10F);
             ForeColor = Color.FromArgb(220, 221, 222);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "WelcomeForm";
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "Bienvenido";
+            Name = "SuccessForm";
+            Text = "SuccessForm";
             ResumeLayout(false);
             PerformLayout();
-        }
-        private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.Button btnOk;
+            //Style
+            this.BackColor = System.Drawing.Color.FromArgb(54, 57, 63);
+            this.ForeColor = System.Drawing.Color.FromArgb(220, 221, 222);
+            this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
 
+        }
 
         #endregion
 
+        private Label lblMessage;
+        private Button btnOk;
     }
 }

@@ -66,7 +66,6 @@
             lblUsername.Size = new Size(162, 23);
             lblUsername.TabIndex = 3;
             lblUsername.Text = "Nombre de usuario:";
-            lblUsername.Click += lblUsername_Click;
             // 
             // lblPassword
             // 

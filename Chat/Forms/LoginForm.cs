@@ -25,7 +25,7 @@ namespace Chat.Forms
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Debe completar todos los campos.");
+                new ErrorForm("Debe completar todos los campos.").ShowDialog();
                 return;
             }
 
@@ -35,7 +35,7 @@ namespace Chat.Forms
             var user = userService.GetUser(username, password);
             if (user == null)
             {
-                MessageBox.Show("Credenciales inválidas.");
+                new ErrorForm("Credenciales invalidas").ShowDialog();
                 return;
             }
 
@@ -53,6 +53,11 @@ namespace Chat.Forms
         {
             var registerForm = new RegisterForm();
             registerForm.ShowDialog();
+        }
+
+        private void txtUsername_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

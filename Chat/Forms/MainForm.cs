@@ -12,7 +12,6 @@ namespace Chat.Forms
     {
         private HubConnection _connection;
         private readonly UserService _userService;
-
         private User _currentUser;
         private string? _currentChatUser = null;
 
@@ -154,6 +153,17 @@ namespace Chat.Forms
                 }
 
                 btnVolverGeneral.Visible = !string.IsNullOrWhiteSpace(withUser);
+
+                if (string.IsNullOrWhiteSpace(withUser))
+                {
+                    label2.Text = "General";
+                    label2.Visible = true;
+                }
+                else
+                {
+                    label2.Text = withUser;
+                    label2.Visible = true;
+                }
 
             }
             catch (Exception ex)

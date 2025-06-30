@@ -26,7 +26,7 @@ namespace Chat.Forms
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Debe completar todos los campos.");
+                new ErrorForm("Debe completar todos los campos.").ShowDialog();
                 return;
             }
 
@@ -34,12 +34,13 @@ namespace Chat.Forms
 
             if (success)
             {
-                MessageBox.Show("Registro exitoso. Ahora puede iniciar sesión.");
+                new SuccessForm("Registro exitoso. Ahora puede iniciar sesión.").ShowDialog();
                 this.Close();
             }
             else
             {
-                MessageBox.Show("El nombre de usuario ya está en uso. Por favor, elija otro.");
+                new ErrorForm("El nombre de usuario ya está en uso. Por favor, elija otro.").ShowDialog();
+
             }
         }
 
@@ -47,5 +48,6 @@ namespace Chat.Forms
         {
 
         }
+
     }
 }

@@ -46,19 +46,35 @@ namespace Chat.Forms
             .WithUrl("http://localhost:5000/chathub?username=" + _currentUser.Username)
             .Build();
 
-            _connection.On<string, string>("ReceiveMessage", (user, message) =>
+            _connection.On<string, string, string>("ReceiveMessage", (user, toUser, message) =>
             {
                 Invoke(() =>
                 {
                     bool isGeneral = string.IsNullOrWhiteSpace(_currentChatUser);
-                    bool isFromCurrent = user == _currentChatUser;
-                    bool isToCurrent = user == _currentUser.Username;
 
-                    if ((isGeneral) || (!isGeneral && (isFromCurrent || isToCurrent)))
+                    if (isGeneral && string.IsNullOrWhiteSpace(toUser))
                     {
-                        string tag = isGeneral ? "[General]" : "[Privado]";
-                        listBoxMessages.Items.Add($"{tag} {user}: {message}");
+                        // Mensajes generales en el chat general
+                        string fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                        rtbMessages.AppendText($"[{fechaHora}] {user}: {message}{Environment.NewLine}");
                     }
+                    else if (
+                        !isGeneral &&
+                        !string.IsNullOrWhiteSpace(toUser) && // Mensajes privados
+                        (
+                            // Mensaje enviado por el usuario seleccionado hacia mí
+                            (user == _currentChatUser && toUser == _currentUser.Username)
+                            ||
+                            // Mensaje enviado por mí hacia el usuario seleccionado
+                            (user == _currentUser.Username && toUser == _currentChatUser)
+                        )
+                    )
+                    {
+                        string fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                        rtbMessages.AppendText($"[{fechaHora}] {user}: {message}{Environment.NewLine}");
+                    }
+                    rtbMessages.SelectionStart = rtbMessages.TextLength;
+                    rtbMessages.ScrollToCaret();
                 });
             });
 
@@ -142,15 +158,17 @@ namespace Chat.Forms
         {
             try
             {
-                listBoxMessages.Items.Clear();
+                rtbMessages.Clear();
 
                 var messages = await _connection.InvokeAsync<List<Models.Message>>("GetMessageHistory", withUser);
 
                 foreach (var msg in messages.OrderBy(m => m.Timestamp))
                 {
-                    string tag = string.IsNullOrWhiteSpace(msg.ToUsername) ? "[General]" : "[Privado]";
-                    listBoxMessages.Items.Add($"{tag} {msg.FromUsername}: {msg.Content}");
+                    string fechaHora = msg.Timestamp.ToString("dd/MM/yyyy HH:mm");
+                    rtbMessages.AppendText($"[{fechaHora}] {msg.FromUsername}: {msg.Content}{Environment.NewLine}");
                 }
+                rtbMessages.SelectionStart = rtbMessages.TextLength;
+                rtbMessages.ScrollToCaret();
 
                 btnVolverGeneral.Visible = !string.IsNullOrWhiteSpace(withUser);
 

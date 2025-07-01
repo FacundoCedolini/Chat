@@ -35,21 +35,19 @@ namespace Chat.Hubs
 
             if (string.IsNullOrWhiteSpace(toUser))
             {
-                // Enviar a todos menos al emisor
+                // Mensaje general
                 await Clients.AllExcept(Context.ConnectionId)
-                    .SendAsync("ReceiveMessage", fromUser, message);
+                    .SendAsync("ReceiveMessage", fromUser, "", message);
 
-                // Mostrar al emisor su propio mensaje
-                await Clients.Caller.SendAsync("ReceiveMessage", fromUser, message);
+                await Clients.Caller.SendAsync("ReceiveMessage", fromUser, "", message);
             }
             else if (ConnectedUsers.Users.TryGetValue(toUser, out var targetConnectionId))
             {
-                // Enviar mensaje al destinatario
+                // Mensaje privado
                 await Clients.Client(targetConnectionId)
-                    .SendAsync("ReceiveMessage", fromUser, message);
+                    .SendAsync("ReceiveMessage", fromUser, toUser, message);
 
-                // Mostrar también al emisor
-                await Clients.Caller.SendAsync("ReceiveMessage", fromUser, message);
+                await Clients.Caller.SendAsync("ReceiveMessage", fromUser, toUser, message);
             }
         }
 

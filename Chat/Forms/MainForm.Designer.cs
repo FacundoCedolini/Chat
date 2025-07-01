@@ -7,7 +7,7 @@ namespace Chat.Forms
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnVolverGeneral;
-        private System.Windows.Forms.ListBox listBoxMessages;
+        private System.Windows.Forms.RichTextBox rtbMessages;
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblMessage;
 
@@ -22,7 +22,7 @@ namespace Chat.Forms
         {
             txtMessage = new TextBox();
             btnSend = new Button();
-            listBoxMessages = new ListBox();
+            rtbMessages = new RichTextBox();
             lblUser = new Label();
             lblMessage = new Label();
             userName = new Label();
@@ -56,17 +56,20 @@ namespace Chat.Forms
             btnSend.UseVisualStyleBackColor = false;
             btnSend.Click += btnSend_Click;
             // 
-            // listBoxMessages
+            // rtbMessages
             // 
-            listBoxMessages.BackColor = Color.FromArgb(47, 49, 54);
-            listBoxMessages.BorderStyle = BorderStyle.None;
-            listBoxMessages.ForeColor = Color.FromArgb(220, 221, 222);
-            listBoxMessages.FormattingEnabled = true;
-            listBoxMessages.ItemHeight = 23;
-            listBoxMessages.Location = new Point(12, 33);
-            listBoxMessages.Name = "listBoxMessages";
-            listBoxMessages.Size = new Size(420, 230);
-            listBoxMessages.TabIndex = 5;
+            rtbMessages = new System.Windows.Forms.RichTextBox();
+            rtbMessages.BackColor = System.Drawing.Color.FromArgb(47, 49, 54);
+            rtbMessages.ForeColor = System.Drawing.Color.FromArgb(220, 221, 222);
+            rtbMessages.Location = new System.Drawing.Point(12, 33);
+            rtbMessages.Name = "rtbMessages";
+            rtbMessages.Size = new System.Drawing.Size(420, 230);
+            rtbMessages.TabIndex = 5;
+            rtbMessages.ReadOnly = true;
+            rtbMessages.BorderStyle = BorderStyle.None;
+            rtbMessages.Font = new Font("Segoe UI", 10F);
+            rtbMessages.WordWrap = true;
+            rtbMessages.ScrollBars = RichTextBoxScrollBars.Vertical;
             // 
             // lblUser
             // 
@@ -158,7 +161,7 @@ namespace Chat.Forms
             Controls.Add(lblMessage);
             Controls.Add(txtMessage);
             Controls.Add(btnSend);
-            Controls.Add(listBoxMessages);
+            Controls.Add(rtbMessages);
             Controls.Add(btnVolverGeneral);
             Font = new Font("Segoe UI", 10F);
             ForeColor = Color.FromArgb(220, 221, 222);

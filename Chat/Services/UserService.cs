@@ -2,6 +2,8 @@
 using Chat.Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Net;
+using System.Net.Mail;
 
 namespace Chat.Services
 {
@@ -21,7 +23,7 @@ namespace Chat.Services
         }
 
 
-        public bool Register(string username, string password)
+        public bool Register(string username, string password, string email)
         {
             if (_context.Users.Any(u => u.Username == username))
                 return false;
@@ -31,13 +33,32 @@ namespace Chat.Services
             var user = new User
             {
                 Username = username,
-                PasswordHash = hashedPassword
+                PasswordHash = hashedPassword,
+                Email = email
             };
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
             return true;
+        }
+
+        public void SendVerificationCode(string email, string code)
+        {
+            var smtp = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("verificacion.coda@gmail.com", "gbva nwez mdtf bgjc"),
+                EnableSsl = true,
+            };
+
+            var mail = new MailMessage("verificacion.coda@gmail.com", email)
+            {
+                Subject = "Código de verificación",
+                Body = $"Tu código de verificación es: {code}"
+            };
+
+            smtp.Send(mail);
         }
 
         public bool Login(string username, string password)

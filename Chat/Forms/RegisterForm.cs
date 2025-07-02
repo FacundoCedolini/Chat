@@ -23,6 +23,7 @@ namespace Chat.Forms
         {
             var username = txtUsername.Text.Trim();
             var password = txtPassword.Text;
+            var email = txtEmail.Text.Trim();
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -30,7 +31,13 @@ namespace Chat.Forms
                 return;
             }
 
-            var success = _userService.Register(username, password);
+            if (!email.Contains("@") || !email.Contains("."))
+            {
+                new ErrorForm("El email ingresado no es válido.").ShowDialog();
+                return;
+            }
+
+            var success = _userService.Register(username, password, email);
 
             if (success)
             {
@@ -39,7 +46,7 @@ namespace Chat.Forms
             }
             else
             {
-                new ErrorForm("El nombre de usuario ya está en uso. Por favor, elija otro.").ShowDialog();
+                new ErrorForm("El nombre de usuario o email ya está en uso. Por favor, elija otro.").ShowDialog();
 
             }
         }
@@ -49,5 +56,9 @@ namespace Chat.Forms
 
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

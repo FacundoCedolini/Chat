@@ -39,16 +39,34 @@ namespace Chat.Forms
                 return;
             }
 
-            LoggedInUser = user;
-            this.Hide();
-            var welcome = new WelcomeForm(LoggedInUser);
-            welcome.ShowDialog();
-            this.Close();
+            var random = new Random();
+            string code = random.Next(100000, 999999).ToString();
 
+            try
+            {
+                userService.SendVerificationCode(user.Email, code);
+            }
+            catch
+            {
+                new ErrorForm("No se pudo enviar el correo de verificación.").ShowDialog();
+                return;
+            }
 
+            var verificationForm = new VerificationForm(code);
+            if (verificationForm.ShowDialog() == DialogResult.OK)
+            {
+                LoggedInUser = user;
+                this.Hide();
+                var welcome = new WelcomeForm(LoggedInUser);
+                welcome.ShowDialog();
+                this.Close();
+            }
+            else
+            {
+                new ErrorForm("Código incorrecto.").ShowDialog();
+            }
         }
-
-
+        
         private void btnRegister_Click(object sender, EventArgs e)
         {
             var registerForm = new RegisterForm();

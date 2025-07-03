@@ -18,7 +18,7 @@ namespace Chat.Hubs
             if (string.IsNullOrEmpty(fromUser))
                 return;
 
-            // Guardar mensaje
+            // Guardar mensaje.
             using (var db = new AppDbContext())
             {
                 var msg = new Message

@@ -131,7 +131,7 @@ namespace Chat.Hubs
         private async Task NotifyUsersChanged()
         {
             var users = ConnectedUsers.Users.Keys.ToList();
-            await Clients.AllExcept(Context.ConnectionId).SendAsync("UsersUpdated", users);
+            await Clients.All.SendAsync("UsersUpdated", users);
         }
 
     }

@@ -8,7 +8,6 @@ namespace Chat.Data
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<Models.Message> Messages => Set<Models.Message>();
-
         public DbSet<Group> Groups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
 

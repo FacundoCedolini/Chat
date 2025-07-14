@@ -37,6 +37,15 @@ namespace Chat.Forms
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        private void txtCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btnVerify_Click(btnVerify, EventArgs.Empty);
+            }
+        }
     }
 }
 

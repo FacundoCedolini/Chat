@@ -54,6 +54,7 @@
             txtCode.Name = "txtCode";
             txtCode.Size = new Size(220, 32);
             txtCode.TabIndex = 1;
+            txtCode.KeyDown += txtCode_KeyDown;
             // 
             // btnVerify
             // 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System.Drawing.Drawing2D;
 using System;
 using System.Windows.Forms;
+using Chat.Data;
 
 namespace Chat.Forms
 {
@@ -14,6 +15,9 @@ namespace Chat.Forms
         private readonly UserService _userService;
         private User _currentUser;
         private string? _currentChatUser = null;
+        private List<User> _allUsers = new();
+        private HashSet<string> _connectedUsers = new();
+        private HashSet<string> _usuariosConMensajesNoLeidos = new();
 
 
         public MainForm()
@@ -32,12 +36,22 @@ namespace Chat.Forms
         public MainForm(User currentUser)
         {
             InitializeComponent();
+            listBoxUsers.DrawMode = DrawMode.OwnerDrawFixed;
+            listBoxUsers.DrawItem += listBoxUsers_DrawItem;
             _currentUser = currentUser;
             this.Text = $"Chat - Bienvenido {_currentUser.Username}";
+
+            using (var db = new AppDbContext())
+            {
+                var userService = new UserService(db);
+                _allUsers = userService.GetAllUsers();
+            }
+
             InitSignalR();
 
             UIUtils.RedondearBoton(btnSend);
             UIUtils.RedondearBoton(btnVolverGeneral);
+            UIUtils.RedondearBoton(btnCerrarSesion);
         }
 
         private async void InitSignalR()
@@ -73,6 +87,14 @@ namespace Chat.Forms
                         string fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                         rtbMessages.AppendText($"[{fechaHora}] {user}: {message}{Environment.NewLine}");
                     }
+
+                    // Si recibo un mensaje privado, se marca como no leido
+                    if (isGeneral && !string.IsNullOrWhiteSpace(toUser) && toUser == _currentUser.Username)
+                    {
+                        _usuariosConMensajesNoLeidos.Add(user);
+                        UpdateUserList();
+                    }
+
                     rtbMessages.SelectionStart = rtbMessages.TextLength;
                     rtbMessages.ScrollToCaret();
                 });
@@ -82,14 +104,11 @@ namespace Chat.Forms
             {
                 Invoke(() =>
                 {
-                    listBoxUsers.Items.Clear();
-                    foreach (var user in users)
-                    {
-                        if (user != _currentUser.Username)
-                            listBoxUsers.Items.Add(user);
-                    }
+                    _connectedUsers = users.Where(u => u != _currentUser.Username).ToHashSet();
+                    UpdateUserList();
                 });
             });
+
 
             try
             {
@@ -128,6 +147,58 @@ namespace Chat.Forms
             listBoxUsers.ClearSelected();
         }
 
+        private async void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            if (_connection != null)
+            {
+                try
+                {
+                    await _connection.StopAsync();
+                    await _connection.DisposeAsync();
+                }
+                catch { /**/ }
+            }
+            this.Hide();
+            var loginForm = new LoginForm();
+            loginForm.ShowDialog();
+            this.Close();
+        }
+
+        private void txtMessage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btnSend_Click(btnSend, EventArgs.Empty);
+            }
+        }
+
+        private void listBoxUsers_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+
+            var user = (User)listBoxUsers.Items[e.Index];
+            bool conectado = _connectedUsers.Contains(user.Username);
+            bool tieneNoLeidos = _usuariosConMensajesNoLeidos.Contains(user.Username);
+
+            Color color;
+            if (tieneNoLeidos)
+                color = Color.DeepSkyBlue; // Azul para mensajes no leídos
+            else if (conectado)
+                color = Color.White;       // Blanco para conectados
+            else
+                color = Color.Gray;        // Gris para desconectados
+
+            e.DrawBackground();
+            using (Brush brush = new SolidBrush(color))
+            {
+                e.Graphics.DrawString(user.Username, e.Font, brush, e.Bounds);
+            }
+            e.DrawFocusRectangle();
+        }
+
+
+
         private async void MainForm_Load(object sender, EventArgs e)
         {
             userName.Text = _currentUser?.Username ?? "Usuario Desconocido";
@@ -153,6 +224,37 @@ namespace Chat.Forms
                 MessageBox.Show("Error al cargar usuarios conectados: " + ex.Message);
             }
         }
+
+        private void UpdateUserList()
+        {
+            listBoxUsers.Items.Clear();
+
+            // Usuarios con mensajes no leídos (azul)
+            foreach (var user in _allUsers
+                .Where(u => _usuariosConMensajesNoLeidos.Contains(u.Username) && u.Username != _currentUser.Username))
+            {
+                listBoxUsers.Items.Add(user);
+            }
+
+            // Usuarios conectados (blanco) que NO tienen mensajes no leídos
+            foreach (var user in _allUsers
+                .Where(u => _connectedUsers.Contains(u.Username)
+                    && !_usuariosConMensajesNoLeidos.Contains(u.Username)
+                    && u.Username != _currentUser.Username))
+            {
+                listBoxUsers.Items.Add(user);
+            }
+
+            // Usuarios desconectados (gris) que NO tienen mensajes no leídos
+            foreach (var user in _allUsers
+                .Where(u => !_connectedUsers.Contains(u.Username)
+                    && !_usuariosConMensajesNoLeidos.Contains(u.Username)
+                    && u.Username != _currentUser.Username))
+            {
+                listBoxUsers.Items.Add(user);
+            }
+        }
+
 
         private async Task LoadMessages(string? withUser = null)
         {
@@ -192,13 +294,16 @@ namespace Chat.Forms
 
         private async void listBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedUser = listBoxUsers.SelectedItem?.ToString();
+            var selectedUser = (listBoxUsers.SelectedItem as User)?.Username;
             if (!string.IsNullOrWhiteSpace(selectedUser))
             {
                 _currentChatUser = selectedUser;
+                _usuariosConMensajesNoLeidos.Remove(selectedUser);
+                UpdateUserList();
                 btnVolverGeneral.Visible = true;
                 await LoadMessages(_currentChatUser);
             }
+
         }
     }
 }

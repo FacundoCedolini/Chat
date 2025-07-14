@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Services
 {
@@ -14,6 +15,11 @@ namespace Chat.Services
         public UserService(AppDbContext context)
         {
             _context = context;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _context.Users.ToList();
         }
 
         public User? GetUser(string username, string password)

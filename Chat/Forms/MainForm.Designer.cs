@@ -10,6 +10,8 @@ namespace Chat.Forms
         private System.Windows.Forms.RichTextBox rtbMessages;
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblMessage;
+        private System.Windows.Forms.Button btnCerrarSesion;
+
 
         protected override void Dispose(bool disposing)
         {
@@ -30,6 +32,7 @@ namespace Chat.Forms
             label1 = new Label();
             btnVolverGeneral = new Button();
             label2 = new Label();
+            btnCerrarSesion = new Button();
             SuspendLayout();
             // 
             // txtMessage
@@ -37,10 +40,11 @@ namespace Chat.Forms
             txtMessage.BackColor = Color.FromArgb(64, 68, 75);
             txtMessage.BorderStyle = BorderStyle.FixedSingle;
             txtMessage.ForeColor = Color.FromArgb(220, 221, 222);
-            txtMessage.Location = new Point(95, 310);
+            txtMessage.Location = new Point(90, 373);
             txtMessage.Name = "txtMessage";
             txtMessage.Size = new Size(380, 30);
             txtMessage.TabIndex = 3;
+            txtMessage.KeyDown += txtMessage_KeyDown;
             // 
             // btnSend
             // 
@@ -48,7 +52,7 @@ namespace Chat.Forms
             btnSend.FlatAppearance.BorderSize = 0;
             btnSend.FlatStyle = FlatStyle.Flat;
             btnSend.ForeColor = Color.White;
-            btnSend.Location = new Point(487, 310);
+            btnSend.Location = new Point(487, 373);
             btnSend.Name = "btnSend";
             btnSend.Size = new Size(110, 30);
             btnSend.TabIndex = 4;
@@ -58,24 +62,23 @@ namespace Chat.Forms
             // 
             // rtbMessages
             // 
-            rtbMessages = new System.Windows.Forms.RichTextBox();
-            rtbMessages.BackColor = System.Drawing.Color.FromArgb(47, 49, 54);
-            rtbMessages.ForeColor = System.Drawing.Color.FromArgb(220, 221, 222);
-            rtbMessages.Location = new System.Drawing.Point(12, 33);
-            rtbMessages.Name = "rtbMessages";
-            rtbMessages.Size = new System.Drawing.Size(420, 230);
-            rtbMessages.TabIndex = 5;
-            rtbMessages.ReadOnly = true;
+            rtbMessages.BackColor = Color.FromArgb(47, 49, 54);
             rtbMessages.BorderStyle = BorderStyle.None;
             rtbMessages.Font = new Font("Segoe UI", 10F);
-            rtbMessages.WordWrap = true;
+            rtbMessages.ForeColor = Color.FromArgb(220, 221, 222);
+            rtbMessages.Location = new Point(12, 33);
+            rtbMessages.Name = "rtbMessages";
+            rtbMessages.ReadOnly = true;
             rtbMessages.ScrollBars = RichTextBoxScrollBars.Vertical;
+            rtbMessages.Size = new Size(420, 260);
+            rtbMessages.TabIndex = 5;
+            rtbMessages.Text = "";
             // 
             // lblUser
             // 
             lblUser.AutoSize = true;
             lblUser.ForeColor = Color.FromArgb(220, 221, 222);
-            lblUser.Location = new Point(12, 279);
+            lblUser.Location = new Point(7, 347);
             lblUser.Name = "lblUser";
             lblUser.Size = new Size(72, 23);
             lblUser.TabIndex = 0;
@@ -85,7 +88,7 @@ namespace Chat.Forms
             // 
             lblMessage.AutoSize = true;
             lblMessage.ForeColor = Color.FromArgb(220, 221, 222);
-            lblMessage.Location = new Point(12, 313);
+            lblMessage.Location = new Point(7, 375);
             lblMessage.Name = "lblMessage";
             lblMessage.Size = new Size(77, 23);
             lblMessage.TabIndex = 1;
@@ -95,7 +98,7 @@ namespace Chat.Forms
             // 
             userName.AutoSize = true;
             userName.ForeColor = Color.FromArgb(220, 221, 222);
-            userName.Location = new Point(79, 279);
+            userName.Location = new Point(85, 347);
             userName.Name = "userName";
             userName.Size = new Size(55, 23);
             userName.TabIndex = 6;
@@ -110,7 +113,7 @@ namespace Chat.Forms
             listBoxUsers.ItemHeight = 23;
             listBoxUsers.Location = new Point(460, 38);
             listBoxUsers.Name = "listBoxUsers";
-            listBoxUsers.Size = new Size(137, 207);
+            listBoxUsers.Size = new Size(137, 253);
             listBoxUsers.TabIndex = 9;
             listBoxUsers.SelectedIndexChanged += listBoxUsers_SelectedIndexChanged;
             // 
@@ -130,7 +133,7 @@ namespace Chat.Forms
             btnVolverGeneral.FlatAppearance.BorderSize = 0;
             btnVolverGeneral.FlatStyle = FlatStyle.Flat;
             btnVolverGeneral.ForeColor = Color.White;
-            btnVolverGeneral.Location = new Point(487, 260);
+            btnVolverGeneral.Location = new Point(487, 326);
             btnVolverGeneral.Name = "btnVolverGeneral";
             btnVolverGeneral.Size = new Size(110, 33);
             btnVolverGeneral.TabIndex = 11;
@@ -149,10 +152,25 @@ namespace Chat.Forms
             label2.TabIndex = 12;
             label2.Text = "Label2";
             // 
+            // btnCerrarSesion
+            // 
+            btnCerrarSesion.BackColor = Color.FromArgb(88, 101, 242);
+            btnCerrarSesion.FlatAppearance.BorderSize = 0;
+            btnCerrarSesion.FlatStyle = FlatStyle.Flat;
+            btnCerrarSesion.ForeColor = Color.White;
+            btnCerrarSesion.Location = new Point(7, 311);
+            btnCerrarSesion.Name = "btnCerrarSesion";
+            btnCerrarSesion.Size = new Size(146, 33);
+            btnCerrarSesion.TabIndex = 13;
+            btnCerrarSesion.Text = "Cerrar sesión";
+            btnCerrarSesion.UseVisualStyleBackColor = true;
+            btnCerrarSesion.Click += btnCerrarSesion_Click;
+            // 
             // MainForm
-            //
+            // 
             BackColor = Color.FromArgb(54, 57, 63);
-            ClientSize = new Size(622, 364);
+            ClientSize = new Size(626, 414);
+            Controls.Add(btnCerrarSesion);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(listBoxUsers);

@@ -17,6 +17,11 @@ namespace Chat.Models
         public string? Description { get; set; }
 
         public virtual ICollection<UserGroup> Members { get; set; } = new List<UserGroup>();
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 
 }

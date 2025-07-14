@@ -8,5 +8,9 @@ namespace Chat.Models
         public string PasswordHash { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public ICollection<UserGroup> Groups { get; set; }
+        public override string ToString()
+        {
+            return Username;
+        }
     }
 }

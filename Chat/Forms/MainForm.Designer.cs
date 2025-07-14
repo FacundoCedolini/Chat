@@ -33,6 +33,9 @@ namespace Chat.Forms
             btnVolverGeneral = new Button();
             label2 = new Label();
             btnCerrarSesion = new Button();
+            btnCrearGrupo = new Button();
+            listBoxGrupos = new ListBox();
+            label3 = new Label();
             SuspendLayout();
             // 
             // txtMessage
@@ -70,7 +73,7 @@ namespace Chat.Forms
             rtbMessages.Name = "rtbMessages";
             rtbMessages.ReadOnly = true;
             rtbMessages.ScrollBars = RichTextBoxScrollBars.Vertical;
-            rtbMessages.Size = new Size(420, 260);
+            rtbMessages.Size = new Size(420, 283);
             rtbMessages.TabIndex = 5;
             rtbMessages.Text = "";
             // 
@@ -78,7 +81,7 @@ namespace Chat.Forms
             // 
             lblUser.AutoSize = true;
             lblUser.ForeColor = Color.FromArgb(220, 221, 222);
-            lblUser.Location = new Point(7, 347);
+            lblUser.Location = new Point(7, 336);
             lblUser.Name = "lblUser";
             lblUser.Size = new Size(72, 23);
             lblUser.TabIndex = 0;
@@ -98,7 +101,7 @@ namespace Chat.Forms
             // 
             userName.AutoSize = true;
             userName.ForeColor = Color.FromArgb(220, 221, 222);
-            userName.Location = new Point(85, 347);
+            userName.Location = new Point(85, 336);
             userName.Name = "userName";
             userName.Size = new Size(55, 23);
             userName.TabIndex = 6;
@@ -111,9 +114,9 @@ namespace Chat.Forms
             listBoxUsers.ForeColor = Color.FromArgb(220, 221, 222);
             listBoxUsers.FormattingEnabled = true;
             listBoxUsers.ItemHeight = 23;
-            listBoxUsers.Location = new Point(460, 38);
+            listBoxUsers.Location = new Point(447, 40);
             listBoxUsers.Name = "listBoxUsers";
-            listBoxUsers.Size = new Size(137, 253);
+            listBoxUsers.Size = new Size(150, 276);
             listBoxUsers.TabIndex = 9;
             listBoxUsers.SelectedIndexChanged += listBoxUsers_SelectedIndexChanged;
             // 
@@ -121,11 +124,11 @@ namespace Chat.Forms
             // 
             label1.AutoSize = true;
             label1.ForeColor = Color.FromArgb(220, 221, 222);
-            label1.Location = new Point(442, 12);
+            label1.Location = new Point(487, 14);
             label1.Name = "label1";
-            label1.Size = new Size(171, 23);
+            label1.Size = new Size(79, 23);
             label1.TabIndex = 10;
-            label1.Text = "Usuarios conectados:";
+            label1.Text = "Usuarios:";
             // 
             // btnVolverGeneral
             // 
@@ -133,9 +136,9 @@ namespace Chat.Forms
             btnVolverGeneral.FlatAppearance.BorderSize = 0;
             btnVolverGeneral.FlatStyle = FlatStyle.Flat;
             btnVolverGeneral.ForeColor = Color.White;
-            btnVolverGeneral.Location = new Point(487, 326);
+            btnVolverGeneral.Location = new Point(487, 337);
             btnVolverGeneral.Name = "btnVolverGeneral";
-            btnVolverGeneral.Size = new Size(110, 33);
+            btnVolverGeneral.Size = new Size(110, 30);
             btnVolverGeneral.TabIndex = 11;
             btnVolverGeneral.Text = "Atras";
             btnVolverGeneral.UseVisualStyleBackColor = false;
@@ -158,18 +161,58 @@ namespace Chat.Forms
             btnCerrarSesion.FlatAppearance.BorderSize = 0;
             btnCerrarSesion.FlatStyle = FlatStyle.Flat;
             btnCerrarSesion.ForeColor = Color.White;
-            btnCerrarSesion.Location = new Point(7, 311);
+            btnCerrarSesion.Location = new Point(616, 373);
             btnCerrarSesion.Name = "btnCerrarSesion";
-            btnCerrarSesion.Size = new Size(146, 33);
+            btnCerrarSesion.Size = new Size(146, 30);
             btnCerrarSesion.TabIndex = 13;
             btnCerrarSesion.Text = "Cerrar sesión";
             btnCerrarSesion.UseVisualStyleBackColor = true;
             btnCerrarSesion.Click += btnCerrarSesion_Click;
             // 
+            // btnCrearGrupo
+            // 
+            btnCrearGrupo.BackColor = Color.FromArgb(88, 101, 242);
+            btnCrearGrupo.FlatAppearance.BorderSize = 0;
+            btnCrearGrupo.FlatStyle = FlatStyle.Flat;
+            btnCrearGrupo.ForeColor = Color.White;
+            btnCrearGrupo.Location = new Point(616, 337);
+            btnCrearGrupo.Name = "btnCrearGrupo";
+            btnCrearGrupo.Size = new Size(146, 30);
+            btnCrearGrupo.TabIndex = 14;
+            btnCrearGrupo.Text = "Crear grupo";
+            btnCrearGrupo.UseVisualStyleBackColor = true;
+            btnCrearGrupo.Click += btnCrearGrupo_Click;
+            // 
+            // listBoxGrupos
+            // 
+            listBoxGrupos.BackColor = Color.FromArgb(47, 49, 54);
+            listBoxGrupos.BorderStyle = BorderStyle.None;
+            listBoxGrupos.ForeColor = Color.FromArgb(220, 221, 222);
+            listBoxGrupos.FormattingEnabled = true;
+            listBoxGrupos.ItemHeight = 23;
+            listBoxGrupos.Location = new Point(616, 40);
+            listBoxGrupos.Name = "listBoxGrupos";
+            listBoxGrupos.Size = new Size(150, 276);
+            listBoxGrupos.TabIndex = 15;
+            listBoxGrupos.SelectedIndexChanged += listBoxGrupos_SelectedIndexChanged;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(654, 14);
+            label3.Name = "label3";
+            label3.Size = new Size(69, 23);
+            label3.TabIndex = 16;
+            label3.Text = "Grupos:";
+            label3.Click += label3_Click;
+            // 
             // MainForm
             // 
             BackColor = Color.FromArgb(54, 57, 63);
-            ClientSize = new Size(626, 414);
+            ClientSize = new Size(785, 414);
+            Controls.Add(label3);
+            Controls.Add(listBoxGrupos);
+            Controls.Add(btnCrearGrupo);
             Controls.Add(btnCerrarSesion);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -193,5 +236,8 @@ namespace Chat.Forms
         private ListBox listBoxUsers;
         private Label label1;
         private Label label2;
+        private Button btnCrearGrupo;
+        private ListBox listBoxGrupos;
+        private Label label3;
     }
 }

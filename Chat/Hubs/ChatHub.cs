@@ -51,6 +51,45 @@ namespace Chat.Hubs
             }
         }
 
+        public async Task SendGroupMessage(int groupId, string message)
+        {
+            var fromUser = ConnectedUsers.Users
+                .FirstOrDefault(kvp => kvp.Value == Context.ConnectionId).Key;
+
+            if (string.IsNullOrEmpty(fromUser))
+                return;
+
+            using (var db = new AppDbContext())
+            {
+                var msg = new Message
+                {
+                    FromUsername = fromUser,
+                    GroupId = groupId,
+                    Content = message,
+                    Timestamp = DateTime.Now
+                };
+                db.Messages.Add(msg);
+                await db.SaveChangesAsync();
+            }
+
+            using (var db = new AppDbContext())
+            {
+                var miembros = db.UserGroups
+                    .Where(ug => ug.GroupId == groupId)
+                    .Select(ug => ug.User.Username)
+                    .ToList();
+
+                foreach (var miembro in miembros)
+                {
+                    if (ConnectedUsers.Users.TryGetValue(miembro, out var connId))
+                    {
+                        await Clients.Client(connId).SendAsync("ReceiveGroupMessage", fromUser, groupId, message);
+                    }
+                }
+            }
+        }
+
+
         public override async Task OnConnectedAsync()
         {
             var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
@@ -80,6 +119,17 @@ namespace Chat.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
+        public async Task NotifyGroupCreated(int groupId, List<string> usernames)
+        {
+            foreach (var username in usernames)
+            {
+                if (ConnectedUsers.Users.TryGetValue(username, out var connId))
+                {
+                    await Clients.Client(connId).SendAsync("GroupCreated", groupId);
+                }
+            }
+        }
+
         public async Task<List<Message>> GetMessageHistory(string? withUser = null)
         {
             try
@@ -102,7 +152,7 @@ namespace Chat.Hubs
                 if (string.IsNullOrWhiteSpace(withUser))
                 {
                     return await db.Messages
-                        .Where(m => m.ToUsername == null)
+                        .Where(m => m.ToUsername == null && m.GroupId == null)
                         .OrderBy(m => m.Timestamp)
                         .ToListAsync();
                 }
@@ -122,6 +172,16 @@ namespace Chat.Hubs
                 return new List<Message>();
             }
         }
+
+        public async Task<List<Message>> GetGroupMessageHistory(int groupId)
+        {
+            using var db = new AppDbContext();
+            return await db.Messages
+                .Where(m => m.GroupId == groupId)
+                .OrderBy(m => m.Timestamp)
+                .ToListAsync();
+        }
+
 
         public Task<List<string>> GetConnectedUsers()
         {

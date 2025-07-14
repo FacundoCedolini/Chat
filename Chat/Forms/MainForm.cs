@@ -15,6 +15,7 @@ namespace Chat.Forms
         private readonly UserService _userService;
         private User _currentUser;
         private string? _currentChatUser = null;
+        private Group? _currentGroup = null;
         private List<User> _allUsers = new();
         private HashSet<string> _connectedUsers = new();
         private HashSet<string> _usuariosConMensajesNoLeidos = new();
@@ -52,6 +53,7 @@ namespace Chat.Forms
             UIUtils.RedondearBoton(btnSend);
             UIUtils.RedondearBoton(btnVolverGeneral);
             UIUtils.RedondearBoton(btnCerrarSesion);
+            UIUtils.RedondearBoton(btnCrearGrupo);
         }
 
         private async void InitSignalR()
@@ -100,6 +102,28 @@ namespace Chat.Forms
                 });
             });
 
+            _connection.On<string, int, string>("ReceiveGroupMessage", (user, groupId, message) =>
+            {
+                Invoke(() =>
+                {
+                    if (_currentGroup != null && _currentGroup.Id == groupId)
+                    {
+                        string fechaHora = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                        rtbMessages.AppendText($"[{fechaHora}] {user}: {message}{Environment.NewLine}");
+                        rtbMessages.SelectionStart = rtbMessages.TextLength;
+                        rtbMessages.ScrollToCaret();
+                    }
+                });
+            });
+
+            _connection.On<int>("GroupCreated", async (groupId) =>
+            {
+                Invoke(() =>
+                {
+                    CargarGrupos();
+                });
+            });
+
             _connection.On<List<string>>("UsersUpdated", (users) =>
             {
                 Invoke(() =>
@@ -126,11 +150,17 @@ namespace Chat.Forms
             if (string.IsNullOrWhiteSpace(message))
                 return;
 
-            string toUser = _currentChatUser ?? ""; // "" para general
-
             try
             {
-                await _connection.InvokeAsync("SendMessage", toUser, message);
+                if (_currentGroup != null)
+                {
+                    await _connection.InvokeAsync("SendGroupMessage", _currentGroup.Id, message);
+                }
+                else
+                {
+                    string toUser = _currentChatUser ?? ""; // "" para general
+                    await _connection.InvokeAsync("SendMessage", toUser, message);
+                }
                 txtMessage.Clear();
             }
             catch (Exception ex)
@@ -141,11 +171,25 @@ namespace Chat.Forms
 
         private async void btnVolverGeneral_Click(object? sender, EventArgs e)
         {
+            _currentGroup = null;
             _currentChatUser = null;
             btnVolverGeneral.Visible = false;
+
+            UpdateUserList();
+
             await LoadMessages();
             listBoxUsers.ClearSelected();
         }
+
+        private void btnCrearGrupo_Click(object sender, EventArgs e)
+        {
+            var crearGrupoForm = new CrearGrupoForm(_currentUser, _connection);
+            if (crearGrupoForm.ShowDialog() == DialogResult.OK)
+            {
+                CargarGrupos();
+            }
+        }
+
 
         private async void btnCerrarSesion_Click(object sender, EventArgs e)
         {
@@ -202,7 +246,7 @@ namespace Chat.Forms
         private async void MainForm_Load(object sender, EventArgs e)
         {
             userName.Text = _currentUser?.Username ?? "Usuario Desconocido";
-
+            CargarGrupos();
             LoadMessages();
         }
 
@@ -262,7 +306,15 @@ namespace Chat.Forms
             {
                 rtbMessages.Clear();
 
-                var messages = await _connection.InvokeAsync<List<Models.Message>>("GetMessageHistory", withUser);
+                List<Models.Message> messages;
+                if (_currentGroup != null)
+                {
+                    messages = await _connection.InvokeAsync<List<Models.Message>>("GetGroupMessageHistory", _currentGroup.Id);
+                }
+                else
+                {
+                    messages = await _connection.InvokeAsync<List<Models.Message>>("GetMessageHistory", withUser);
+                }
 
                 foreach (var msg in messages.OrderBy(m => m.Timestamp))
                 {
@@ -272,9 +324,14 @@ namespace Chat.Forms
                 rtbMessages.SelectionStart = rtbMessages.TextLength;
                 rtbMessages.ScrollToCaret();
 
-                btnVolverGeneral.Visible = !string.IsNullOrWhiteSpace(withUser);
+                btnVolverGeneral.Visible = _currentGroup != null || !string.IsNullOrWhiteSpace(withUser);
 
-                if (string.IsNullOrWhiteSpace(withUser))
+                if (_currentGroup != null)
+                {
+                    label2.Text = _currentGroup.Name;
+                    label2.Visible = true;
+                }
+                else if (string.IsNullOrWhiteSpace(withUser))
                 {
                     label2.Text = "General";
                     label2.Visible = true;
@@ -284,11 +341,38 @@ namespace Chat.Forms
                     label2.Text = withUser;
                     label2.Visible = true;
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar mensajes: " + ex.Message);
+            }
+        }
+
+
+        private async void listBoxGrupos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var grupoSeleccionado = listBoxGrupos.SelectedItem as Group;
+            if (grupoSeleccionado != null)
+            {
+                _currentGroup = grupoSeleccionado;
+                _currentChatUser = null;
+                btnVolverGeneral.Visible = true;
+
+                using (var db = new AppDbContext())
+                {
+                    var miembros = db.UserGroups
+                        .Where(ug => ug.GroupId == grupoSeleccionado.Id)
+                        .Select(ug => ug.User)
+                        .ToList();
+
+                    listBoxUsers.Items.Clear();
+                    foreach (var user in miembros)
+                    {
+                        if (user.Username != _currentUser.Username)
+                            listBoxUsers.Items.Add(user);
+                    }
+                }
+                await LoadMessages();
             }
         }
 
@@ -297,12 +381,38 @@ namespace Chat.Forms
             var selectedUser = (listBoxUsers.SelectedItem as User)?.Username;
             if (!string.IsNullOrWhiteSpace(selectedUser))
             {
+                _currentGroup = null;
                 _currentChatUser = selectedUser;
                 _usuariosConMensajesNoLeidos.Remove(selectedUser);
                 UpdateUserList();
                 btnVolverGeneral.Visible = true;
                 await LoadMessages(_currentChatUser);
             }
+        }
+
+        private List<Group> _misGrupos = new();
+
+        private void CargarGrupos()
+        {
+            using (var db = new AppDbContext())
+            {
+                _misGrupos = db.UserGroups
+                    .Where(ug => ug.UserId == _currentUser.Id)
+                    .Select(ug => ug.Group)
+                    .Distinct()
+                    .ToList();
+            }
+
+            listBoxGrupos.Items.Clear();
+            foreach (var grupo in _misGrupos)
+            {
+                listBoxGrupos.Items.Add(grupo);
+            }
+        }
+
+
+        private void label3_Click(object sender, EventArgs e)
+        {
 
         }
     }
